@@ -1,0 +1,29 @@
+[Unit]
+Description=CipherDrop Flask Service
+After=network.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/opt/cipherdrop
+Environment="FLASK_APP=app.py"
+Environment="FLASK_SECRET_KEY=${FLASK_SECRET_KEY}"
+Environment="MASTER_KEY=${MASTER_KEY}"
+Environment="CONFIG_MASTER_KEY=${CONFIG_MASTER_KEY}"
+Environment="DATABASE_URL=${DATABASE_URL}"
+Environment="PORT=5000"
+ExecStart=/opt/cipherdrop/venv/bin/python app.py
+Restart=on-failure
+RestartSec=5
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ReadWritePaths=/opt/cipherdrop /var/log/cipherdrop
+WorkingDirectory=/opt/cipherdrop
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="card shadow-lg border-0">
+      <div class="card-body p-4">
+        <div class="d-flex align-items-center gap-3 mb-3">
+          <div class="circle-icon success"><i class="fa-solid fa-check"></i></div>
+          <div>
+            <h2 class="h4 mb-0">{{ created_type }} secured</h2>
+            <p class="text-muted mb-0">Scan or share the QR below; the link is not shown in plaintext.</p>
+          </div>
+        </div>
+        <div class="row g-4">
+          <div class="col-md-6 text-center">
+            <div class="qr-shell shadow-sm">
+              <img src="{{ qr_share }}" alt="Share QR" class="img-fluid" id="qr-share-img">
+            </div>
+            <p class="mt-2 mb-0 fw-semibold">Share link QR</p>
+            <p class="text-muted small mb-0">Pass this code to the recipient. URL is hidden by design.</p>
+            <button class="btn btn-outline-primary btn-sm mt-2 copy-qr" data-target="qr-share-img" data-filename="share-qr.png">
+              Copy image
+            </button>
+          </div>
+          <div class="col-md-6 text-center">
+            <div class="qr-shell shadow-sm">
+              <img src="{{ qr_password }}" alt="Password entry QR" class="img-fluid" id="qr-password-img">
+            </div>
+            <p class="mt-2 mb-0 fw-semibold">Password entry QR</p>
+            <p class="text-muted small mb-0">Guides the recipient to the unlock screen without exposing the password.</p>
+            <button class="btn btn-outline-primary btn-sm mt-2 copy-qr" data-target="qr-password-img" data-filename="password-qr.png">
+              Copy image
+            </button>
+          </div>
+        </div>
+        <div class="alert alert-info d-flex align-items-center gap-2 mt-4">
+          <i class="fa-solid fa-bolt"></i>
+          <div>
+            <div class="fw-semibold mb-0">Expires at {{ expires_at.strftime("%Y-%m-%d %H:%M %Z") if expires_at else "soon" }}</div>
+            <small class="text-muted">First successful view/download destroys this drop. Keep the password separate from the link.</small>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between align-items-center mt-3">
+          <small class="text-muted">Token: {{ share_token[:6] }}••••{{ share_token[-4:] }}</small>
+          <a href="{{ url_for('index') }}" class="btn btn-outline-primary">Create another</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

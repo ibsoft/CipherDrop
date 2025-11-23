@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ app_name }} | Zero-trace sharing</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/fontawesome.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="bg-surface">
+  <header class="banner">
+    <div class="container d-flex align-items-center justify-content-between gap-3 py-3">
+      <div class="d-flex align-items-center gap-2">
+        <div class="badge-icon shadow-sm">
+          <i class="fa-solid fa-lock"></i>
+        </div>
+        <div>
+          <div class="brand-title">{{ app_name }}</div>
+          <div class="brand-subtitle text-muted">One-time, end-to-end encrypted drops</div>
+        </div>
+      </div>
+      <div class="text-end d-none d-md-block">
+        <div class="meta-line text-uppercase">Secure · Ephemeral · QR-first</div>
+        <div class="meta-line small text-muted">No plaintext persistence · TLS only</div>
+      </div>
+    </div>
+    <div class="crlf-divider" aria-hidden="true">
+      <span>CR</span><span>LF</span><span>CR</span><span>LF</span><span>CR</span><span>LF</span>
+    </div>
+  </header>
+
+  <main class="container py-4">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer mt-auto">
+    <div class="crlf-divider" aria-hidden="true">
+      <span>CR</span><span>LF</span><span>CR</span><span>LF</span><span>CR</span><span>LF</span>
+    </div>
+    <div class="container py-3 d-flex flex-column flex-md-row align-items-center justify-content-between gap-2">
+      <div class="d-flex align-items-center gap-2">
+        <i class="fa-solid fa-shield-halved text-primary"></i>
+        <span class="fw-semibold">Encrypted-at-rest, burned-on-read</span>
+      </div>
+      <div class="d-flex align-items-center gap-3 text-muted flex-wrap">
+        <span><i class="fa-solid fa-circle-check text-success me-1"></i>CSRF &amp; CSP locked</span>
+        <span><i class="fa-solid fa-clock-rotate-left text-info me-1"></i>Auto-expire</span>
+        <span><i class="fa-solid fa-qrcode text-light me-1"></i>QR-first sharing</span>
+        <span><i class="fa-solid fa-code-branch text-warning me-1"></i>Credits: IBSOFT · <a href="https://github.com/ibsoft/CipherDrop.git" target="_blank" rel="noreferrer noopener">GitHub repo</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}" nonce="{{ nonce }}"></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}" nonce="{{ nonce }}"></script>
+</body>
+</html>

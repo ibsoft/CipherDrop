@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-6">
+    <div class="card shadow-lg border-0">
+      <div class="card-body text-center p-4">
+        <div class="circle-icon danger mb-3"><i class="fa-solid fa-skull-crossbones"></i></div>
+        {% if code == 410 %}
+          <h1 class="h5 mb-2">This drop is gone</h1>
+          <p class="text-muted mb-3">It was either consumed or expired. Nothing remains on the server.</p>
+        {% elif code == 404 %}
+          <h1 class="h5 mb-2">Not found</h1>
+          <p class="text-muted mb-3">The link does not exist or was purged.</p>
+        {% elif code == 401 %}
+          <h1 class="h5 mb-2">Access denied</h1>
+          <p class="text-muted mb-3">Invalid password or unauthorized attempt.</p>
+        {% elif code == 413 %}
+          <h1 class="h5 mb-2">Payload too large</h1>
+          <p class="text-muted mb-3">The upload exceeded the configured size limit.</p>
+        {% else %}
+          <h1 class="h5 mb-2">Something went wrong</h1>
+          <p class="text-muted mb-3">The request could not be completed.</p>
+        {% endif %}
+        <a href="{{ url_for('index') }}" class="btn btn-outline-primary">Back home</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

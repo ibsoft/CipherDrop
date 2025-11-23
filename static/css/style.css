@@ -1,0 +1,161 @@
+body {
+  font-family: "Manrope", "Segoe UI", "Helvetica Neue", sans-serif;
+  background: radial-gradient(120% 120% at 50% 0%, #f8fbff 0%, #e8f0ff 35%, #f6f7fb 100%);
+  color: #0f172a;
+}
+
+.bg-surface {
+  min-height: 100vh;
+}
+
+.banner {
+  background: linear-gradient(120deg, #0f172a, #1e3a8a);
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+}
+
+.banner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.08), transparent 35%),
+    radial-gradient(circle at 80% 0%, rgba(255, 255, 255, 0.12), transparent 30%);
+  pointer-events: none;
+}
+
+.brand-title {
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: #fff;
+}
+
+.brand-subtitle {
+  font-size: 0.9rem;
+  color: #e2e8f0;
+}
+
+.banner .meta-line,
+.banner .text-muted {
+  color: #f8fafc !important;
+}
+
+.badge-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: linear-gradient(145deg, #1d4ed8, #0ea5e9);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.1rem;
+}
+
+.circle-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #0f172a;
+  font-size: 1.15rem;
+}
+
+.circle-icon.success {
+  background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+  color: #065f46;
+}
+
+.circle-icon.danger {
+  background: linear-gradient(135deg, #fee2e2, #fecaca);
+  color: #991b1b;
+}
+
+.crlf-divider {
+  display: flex;
+  justify-content: space-around;
+  padding: 4px 0;
+  letter-spacing: 0.12em;
+  font-size: 0.75rem;
+  color: #cbd5e1;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.12) 0, rgba(255, 255, 255, 0.25) 100%);
+  position: relative;
+}
+
+.crlf-divider::before,
+.crlf-divider::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.16) 0, rgba(255, 255, 255, 0.16) 8px, transparent 8px, transparent 16px);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.hero-card {
+  border: 1px solid #e2e8f0;
+}
+
+.fancy-tabs .nav-link {
+  border-radius: 999px;
+  color: #0f172a;
+  font-weight: 700;
+  padding: 0.65rem 1.1rem;
+  transition: all 0.2s ease;
+}
+
+.fancy-tabs .nav-link.active {
+  background: linear-gradient(120deg, #1d4ed8, #0ea5e9);
+  color: #fff;
+  box-shadow: 0 10px 30px rgba(14, 165, 233, 0.3);
+}
+
+.btn-gradient {
+  background: linear-gradient(120deg, #2563eb, #0ea5e9);
+  border: none;
+  box-shadow: 0 10px 24px rgba(14, 165, 233, 0.35);
+}
+
+.btn-gradient:hover {
+  opacity: 0.92;
+}
+
+.qr-shell {
+  background: #f8fafc;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px dashed #cbd5e1;
+}
+
+.footer {
+  background: #0f172a;
+  color: #ffffff;
+}
+
+.footer .crlf-divider {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.08) 0, rgba(255, 255, 255, 0.18) 100%);
+  color: #dbeafe;
+}
+
+.footer a {
+  color: #bfdbfe;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.footer .text-muted,
+.footer .fw-semibold {
+  color: #ffffff !important;
+}
+
+textarea[readonly] {
+  background-color: #f8fafc;
+}

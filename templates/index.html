@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row g-4 align-items-start">
+  <div class="col-lg-5">
+    <div class="card hero-card shadow-lg">
+      <div class="card-body">
+        <div class="d-flex align-items-center gap-3 mb-3">
+          <div class="circle-icon"><i class="fa-solid fa-qrcode"></i></div>
+          <div>
+            <h1 class="h4 mb-1">Share secrets without leaking a byte</h1>
+            <p class="text-muted mb-0">Encrypted locally, purged on first successful view, protected by rate limits and hard CSP.</p>
+          </div>
+        </div>
+        <ul class="list-unstyled small text-muted mb-0">
+          <li class="mb-2"><i class="fa-solid fa-circle-check text-success me-2"></i>Separate key wrapping, AES-GCM per secret/file</li>
+          <li class="mb-2"><i class="fa-solid fa-circle-check text-success me-2"></i>Mandatory expiry up to 7 days · auto-purge</li>
+          <li class="mb-2"><i class="fa-solid fa-circle-check text-success me-2"></i>Optional passwords (never in URLs) · QR-first delivery</li>
+          <li class="mb-2"><i class="fa-solid fa-circle-check text-success me-2"></i>File uploads validated by MIME, extensions, and size cap</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-7">
+    <div class="card shadow-lg border-0">
+      <div class="card-header bg-white border-0">
+        <ul class="nav nav-pills fancy-tabs" id="secretTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link {% if active_tab != 'file' %}active{% endif %}" id="text-tab" data-bs-toggle="pill" data-bs-target="#text-pane" type="button" role="tab" aria-controls="text-pane" aria-selected="{{ 'true' if active_tab != 'file' else 'false' }}">
+              <i class="fa-solid fa-key me-1"></i> Secret text
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link {% if active_tab == 'file' %}active{% endif %}" id="file-tab" data-bs-toggle="pill" data-bs-target="#file-pane" type="button" role="tab" aria-controls="file-pane" aria-selected="{{ 'true' if active_tab == 'file' else 'false' }}">
+              <i class="fa-solid fa-file-shield me-1"></i> Secure file
+            </button>
+          </li>
+        </ul>
+      </div>
+      <div class="card-body">
+        <div class="tab-content" id="secretTabContent">
+          <div class="tab-pane fade {% if active_tab != 'file' %}show active{% endif %}" id="text-pane" role="tabpanel" aria-labelledby="text-tab">
+            <form method="post" novalidate>
+              {{ secret_form.hidden_tag() }}
+              {{ secret_form.form_name(value="secret") }}
+              <div class="mb-3">
+                {{ secret_form.secret_text.label(class="form-label fw-semibold") }}
+                {{ secret_form.secret_text(class="form-control form-control-lg", placeholder="Paste a password, API key, or sensitive note") }}
+                {% for error in secret_form.secret_text.errors %}
+                  <div class="text-danger small">{{ error }}</div>
+                {% endfor %}
+              </div>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  {{ secret_form.password.label(class="form-label fw-semibold") }}
+                  {{ secret_form.password(class="form-control", autocomplete="new-password") }}
+                  {% for error in secret_form.password.errors %}
+                    <div class="text-danger small">{{ error }}</div>
+                  {% endfor %}
+                  <div class="form-text">Password never appears in the URL or logs.</div>
+                </div>
+                <div class="col-md-6">
+                  {{ secret_form.expires_in.label(class="form-label fw-semibold") }}
+                  {{ secret_form.expires_in(class="form-select") }}
+                </div>
+              </div>
+              <div class="form-check my-3">
+                {{ secret_form.burn_after_read(class="form-check-input", checked=True) }}
+                <label class="form-check-label" for="{{ secret_form.burn_after_read.id }}">Burn after the first successful view</label>
+              </div>
+              <div class="d-flex justify-content-between align-items-center">
+                <small class="text-muted">Link creation is rate-limited and CSRF protected.</small>
+                {{ secret_form.submit(class="btn btn-primary btn-gradient px-4") }}
+              </div>
+            </form>
+          </div>
+          <div class="tab-pane fade {% if active_tab == 'file' %}show active{% endif %}" id="file-pane" role="tabpanel" aria-labelledby="file-tab">
+            <form method="post" enctype="multipart/form-data" novalidate>
+              {{ file_form.hidden_tag() }}
+              {{ file_form.form_name(value="file") }}
+              <div class="mb-3">
+                {{ file_form.file.label(class="form-label fw-semibold") }}
+                {{ file_form.file(class="form-control") }}
+                {% for error in file_form.file.errors %}
+                  <div class="text-danger small">{{ error }}</div>
+                {% endfor %}
+                <div class="form-text">Max {{ secure_config["max_upload_mb"] if secure_config.get("max_upload_mb") else 5 }}MB · dangerous extensions blocked.</div>
+              </div>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  {{ file_form.password.label(class="form-label fw-semibold") }}
+                  {{ file_form.password(class="form-control", autocomplete="new-password") }}
+                  {% for error in file_form.password.errors %}
+                    <div class="text-danger small">{{ error }}</div>
+                  {% endfor %}
+                </div>
+                <div class="col-md-6">
+                  {{ file_form.expires_in.label(class="form-label fw-semibold") }}
+                  {{ file_form.expires_in(class="form-select") }}
+                </div>
+              </div>
+              <div class="form-check my-3">
+                {{ file_form.burn_after_read(class="form-check-input", checked=True) }}
+                <label class="form-check-label" for="{{ file_form.burn_after_read.id }}">Burn after the first successful download</label>
+              </div>
+              <div class="d-flex justify-content-between align-items-center">
+                <small class="text-muted">Files are encrypted in DB; no temp disk writes.</small>
+                {{ file_form.submit(class="btn btn-primary btn-gradient px-4") }}
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
