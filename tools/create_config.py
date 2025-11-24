@@ -1,5 +1,11 @@
 import argparse
 from pathlib import Path
+import sys
+
+# Ensure project root is on sys.path so sibling modules can be imported when invoked directly
+ROOT_DIR = Path(__file__).resolve().parent.parent
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
 
 from config_loader import DEFAULT_CONFIG, CONFIG_PATH, _encrypt_config
 from crypto_utils import load_master_key

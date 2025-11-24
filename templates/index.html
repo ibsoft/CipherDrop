@@ -74,7 +74,7 @@
             </form>
           </div>
           <div class="tab-pane fade {% if active_tab == 'file' %}show active{% endif %}" id="file-pane" role="tabpanel" aria-labelledby="file-tab">
-            <form method="post" enctype="multipart/form-data" novalidate>
+            <form method="post" enctype="multipart/form-data" novalidate id="file-upload-form">
               {{ file_form.hidden_tag() }}
               {{ file_form.form_name(value="file") }}
               <div class="mb-3">
@@ -103,8 +103,13 @@
                 <label class="form-check-label" for="{{ file_form.burn_after_read.id }}">Burn after the first successful download</label>
               </div>
               <div class="d-flex justify-content-between align-items-center">
-                <small class="text-muted">Files are encrypted in DB; no temp disk writes.</small>
-                {{ file_form.submit(class="btn btn-primary btn-gradient px-4") }}
+                <div class="d-flex align-items-center gap-2">
+                  <small class="text-muted mb-0">Files are encrypted in DB; no temp disk writes.</small>
+                  <div class="spinner-border spinner-border-sm text-primary d-none" role="status" id="file-upload-spinner">
+                    <span class="visually-hidden">Uploading...</span>
+                  </div>
+                </div>
+                {{ file_form.submit(class="btn btn-primary btn-gradient px-4", id="file-upload-submit") }}
               </div>
             </form>
           </div>

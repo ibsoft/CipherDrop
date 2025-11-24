@@ -72,7 +72,8 @@ with app.app_context():
 
 
 def _utcnow() -> datetime:
-    return datetime.now(timezone.utc)
+    # Use naive UTC to match SQLAlchemy DateTime columns (stored without tzinfo)
+    return datetime.utcnow()
 
 
 def _hash_password(password: str, salt: bytes) -> bytes:
@@ -271,7 +272,6 @@ def index():
     secret_form = SecretForm()
     file_form = FileSecretForm()
     qr_share = None
-    qr_password = None
     share_token = None
     expires_at = None
     created_type = None
@@ -293,7 +293,6 @@ def index():
                 burn_after_read=secret_form.burn_after_read.data,
             )
             qr_share = _build_qr_image(share_url)
-            qr_password = _build_qr_image(password_url)
             created_type = "Secret"
         elif target == "file" and file_form.validate_on_submit():
             expires_at = _expiry_from_choice(file_form.expires_in.data)
@@ -309,7 +308,6 @@ def index():
                 burn_after_read=file_form.burn_after_read.data,
             )
             qr_share = _build_qr_image(share_url)
-            qr_password = _build_qr_image(password_url)
             created_type = "File"
         else:
             return render_template(
@@ -325,7 +323,7 @@ def index():
             "created.html",
             app_name=APP_NAME,
             qr_share=qr_share,
-            qr_password=qr_password,
+            share_url=share_url,
             share_token=share_token,
             expires_at=expires_at,
             nonce=g.csp_nonce,
@@ -396,4 +394,4 @@ def view_secret(token: str):
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-    app.run(host="0.0.0.0", port=int(os.getenv("PORT", "5000")), debug=False)
+    app.run(host="0.0.0.0", port=int(os.getenv("PORT", "5001")), debug=False)

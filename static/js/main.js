@@ -39,6 +39,44 @@
       });
     });
   }
+
+  const copyLinkButtons = document.querySelectorAll(".copy-link");
+  if (copyLinkButtons.length && navigator.clipboard) {
+    copyLinkButtons.forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const link = btn.getAttribute("data-link");
+        if (!link) {
+          btn.textContent = "Copy failed";
+          return;
+        }
+        const original = btn.textContent;
+        try {
+          await navigator.clipboard.writeText(link);
+          btn.textContent = "Copied!";
+        } catch (e) {
+          btn.textContent = "Copy failed";
+        }
+        setTimeout(() => (btn.textContent = original), 1800);
+      });
+    });
+  }
+
+  const fileForm = document.getElementById("file-upload-form");
+  if (fileForm) {
+    fileForm.addEventListener("submit", () => {
+      const spinner = document.getElementById("file-upload-spinner");
+      const submitBtn = document.getElementById("file-upload-submit");
+      if (spinner) {
+        spinner.classList.remove("d-none");
+      }
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.classList.add("disabled");
+        submitBtn.dataset.originalText = submitBtn.textContent;
+        submitBtn.textContent = "Uploading...";
+      }
+    });
+  }
 })();
 
 function dataURLtoBlob(dataUrl) {
